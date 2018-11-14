@@ -54,10 +54,8 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("org.spire-math" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
-    "org.typelevel"               %%% "cats-core"                  % catsV,
     "org.typelevel"               %%% "cats-effect"                % catsEffectV,
-
-    "org.typelevel"               %%% "cats-testkit"               % catsV % Test
+    "org.typelevel"               %%% "cats-testkit"               % catsV        % Test
   )
 )
 
