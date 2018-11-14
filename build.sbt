@@ -1,8 +1,19 @@
-lazy val core = project.in(file("."))
-    .settings(commonSettings, releaseSettings)
-    .settings(
-      name := "unique"
-    )
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+
+lazy val unique = project.in(file("."))
+  .settings(commonSettings, releaseSettings, skipOnPublishSettings)
+  .aggregate(coreJVM, coreJS)
+
+lazy val core = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
+  .in(file("core"))
+  .settings(commonSettings, releaseSettings)
+  .settings(
+    name := "unique"
+  )
+
+lazy val coreJVM = core.jvm
+lazy val coreJS = core.js
 
 val catsV = "1.4.0"
 val catsEffectV = "1.0.0"
@@ -27,14 +38,20 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.12.7",
   crossScalaVersions := Seq(scalaVersion.value, "2.11.12"),
   scalacOptions += "-Yrangepos",
+  scalacOptions in (Compile, doc) ++= Seq(
+      "-groups",
+      "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
+      "-doc-source-url", "https://github.com/christopherdavenport/unique/blob/v" + version.value + "€{FILE_PATH}.scala"
+  ),
+
 
   addCompilerPlugin("org.spire-math" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
-    "org.typelevel"               %% "cats-core"                  % catsV,
-    "org.typelevel"               %% "cats-effect"                % catsEffectV,
+    "org.typelevel"               %%% "cats-core"                  % catsV,
+    "org.typelevel"               %%% "cats-effect"                % catsEffectV,
 
-    "org.typelevel"               %% "cats-testkit"               % catsV % Test
+    "org.typelevel"               %%% "cats-testkit"               % catsV % Test
   )
 )
 
