@@ -6,6 +6,13 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ## <a name="Unreleased"></a>Unreleased Changes
 
+## <a name="0.1.1"></a>New and Noteworthy for Version 0.1.1
+
+Incorporate Useability Improvements
+
+- [#3](https://github.com/ChristopherDavenport/unique/pull/3) Better `toString` for readability, and extends `Serializable`.
+- [#2](https://github.com/ChristopherDavenport/unique/pull/2) Add MiMa for binary compatiblity checking.
+
 ## <a name="0.1.0"></a>New and Noteworthy for Version 0.1.0
 
 Initial Release of `unique`. Create unique values that are equal only to the same effectfully created value. Scala.js project released as well. Fully law checked. [cats-effect](https://github.com/typelevel/cats-effect) is the only dependency and this version is based off 1.0.0.
