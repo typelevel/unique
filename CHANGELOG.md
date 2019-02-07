@@ -8,7 +8,9 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ## <a name="1.0.0"></a>New and Noteworthy for Version 1.0.0
 
-- [#18](https://github.com/ChristopherDavenport/vault/pull/39) Scala 2.13 Integration
+Stable Release of `unique`. This library will maintain binary compatibility moving forward for the forseeable future.
+
+- [#18](https://github.com/ChristopherDavenport/unique/pull/18) Scala 2.13 Integration
 
 Upgrades:
 
