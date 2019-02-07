@@ -6,6 +6,15 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ## <a name="Unreleased"></a>Unreleased Changes
 
+## <a name="1.0.0"></a>New and Noteworthy for Version 1.0.0
+
+- [#18](https://github.com/ChristopherDavenport/vault/pull/39) Scala 2.13 Integration
+
+Upgrades:
+
+- cats 1.6.0
+- cats-effect 1.2.0
+
 ## <a name="0.1.1"></a>New and Noteworthy for Version 0.1.1
 
 Incorporate Useability Improvements
