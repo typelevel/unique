@@ -21,11 +21,11 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "1.6.0"
-val catsEffectV = "1.3.0"
+val catsV = "2.0.0-M1"
+val catsEffectV = "2.0.0-M1"
 
-val kindProjectorV = "0.9.9"
-val betterMonadicForV = "0.3.0-M4"
+val kindProjectorV = "0.10.0"
+val betterMonadicForV = "0.3.0"
 
 
 lazy val contributors = Seq(
@@ -37,7 +37,7 @@ lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
   scalaVersion := "2.12.8",
-  crossScalaVersions := Seq("2.13.0-M5", scalaVersion.value, "2.11.12"),
+  crossScalaVersions := Seq("2.13.0-RC1", scalaVersion.value, "2.11.12"),
   scalacOptions += "-Yrangepos",
   scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
@@ -46,7 +46,7 @@ lazy val commonSettings = Seq(
   ),
 
 
-  addCompilerPlugin("org.spire-math" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
+  addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
