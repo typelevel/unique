@@ -44,6 +44,7 @@ lazy val commonSettings = Seq(
       "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
       "-doc-source-url", "https://github.com/christopherdavenport/unique/blob/v" + version.value + "€{FILE_PATH}.scala"
   ),
+  scalacOptions in (Compile, doc) -= "-Xfatal-warnings",
 
 
   addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
