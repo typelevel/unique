@@ -21,10 +21,10 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.0.0-M2"
-val catsEffectV = "2.0.0-M2"
+val catsV = "2.0.0-M4"
+val catsEffectV = "2.0.0-M4"
 
-val kindProjectorV = "0.10.1"
+val kindProjectorV = "0.10.3"
 val betterMonadicForV = "0.3.0"
 
 
@@ -37,7 +37,7 @@ lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
   scalaVersion := "2.12.8",
-  crossScalaVersions := Seq("2.13.0-RC2", scalaVersion.value, "2.11.12"),
+  crossScalaVersions := Seq("2.13.0", scalaVersion.value, "2.11.12"),
   scalacOptions += "-Yrangepos",
   scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
