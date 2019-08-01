@@ -26,7 +26,7 @@ val catsV = "2.0.0-M4"
 val catsEffectV = "2.0.0-M4"
 
 val kindProjectorV = "0.10.3"
-val betterMonadicForV = "0.3.0"
+val betterMonadicForV = "0.3.1"
 
 
 lazy val contributors = Seq(
