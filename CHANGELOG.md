@@ -6,6 +6,13 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ## <a name="Unreleased"></a>Unreleased Changes
 
+## <a name="2.0.0-RC1"></a>New and Noteworthy for Version 2.0.0-RC1
+
+- Update Off Scala 2.13
+- Cats 2.0-RC1
+- Cats-Effect 2.0-RC1
+- Got off Catsuite
+
 ## <a name="1.0.0"></a>New and Noteworthy for Version 1.0.0
 
 Stable Release of `unique`. This library will maintain binary compatibility moving forward for the forseeable future.
