@@ -12,6 +12,7 @@ This file summarizes **notable** changes for each release, but does not describe
 - Cats 2.0-RC1
 - Cats-Effect 2.0-RC1
 - Got off Catsuite
+- Drop 2.11 Support
 
 ## <a name="1.0.0"></a>New and Noteworthy for Version 1.0.0
 
