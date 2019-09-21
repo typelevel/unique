@@ -2,7 +2,8 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 lazy val unique = project.in(file("."))
   .disablePlugins(MimaPlugin)
-  .settings(commonSettings, releaseSettings, skipOnPublishSettings)
+  .enablePlugins(NoPublishPlugin)
+  .settings(commonSettings, releaseSettings)
   .aggregate(coreJVM, coreJS)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
@@ -15,11 +16,12 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 
 lazy val docs = project.in(file("docs"))
   .disablePlugins(MimaPlugin)
-  .settings(commonSettings, releaseSettings, skipOnPublishSettings, micrositeSettings)
-  .dependsOn(coreJVM)
+  .enablePlugins(NoPublishPlugin)
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(TutPlugin)
-
+  .settings(commonSettings, releaseSettings, micrositeSettings)
+  .dependsOn(coreJVM)
+  
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
@@ -62,7 +64,6 @@ lazy val commonSettings = Seq(
 
 lazy val releaseSettings = {
   Seq(
-    publishArtifact in Test := false,
     scmInfo := Some(
       ScmInfo(
         url("https://github.com/ChristopherDavenport/unique"),
@@ -71,10 +72,7 @@ lazy val releaseSettings = {
     ),
     homepage := Some(url("https://github.com/ChristopherDavenport/unique")),
     licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-    publishMavenStyle := true,
-    pomIncludeRepository := { _ =>
-      false
-    },
+    pomIncludeRepository := { _ => false },
     pomExtra := {
       <developers>
         {for ((username, name) <- contributors) yield
@@ -130,11 +128,3 @@ lazy val micrositeSettings = {
     )
   )
 }
-
-lazy val skipOnPublishSettings = Seq(
-  skip in publish := true,
-  publish := (()),
-  publishLocal := (()),
-  publishArtifact := false,
-  publishTo := None
-)
