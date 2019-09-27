@@ -2,8 +2,7 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 lazy val unique = project.in(file("."))
   .disablePlugins(MimaPlugin)
-  .enablePlugins(NoPublishPlugin)
-  .settings(commonSettings, releaseSettings)
+  .settings(commonSettings, releaseSettings, publish / skip := true)
   .aggregate(coreJVM, coreJS)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
@@ -16,10 +15,9 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 
 lazy val docs = project.in(file("docs"))
   .disablePlugins(MimaPlugin)
-  .enablePlugins(NoPublishPlugin)
   .enablePlugins(MicrositesPlugin)
   .enablePlugins(TutPlugin)
-  .settings(commonSettings, releaseSettings, micrositeSettings)
+  .settings(commonSettings, releaseSettings, micrositeSettings, publish / skip := true)
   .dependsOn(coreJVM)
   
 lazy val coreJVM = core.jvm
