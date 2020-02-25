@@ -23,7 +23,7 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.1.0"
+val catsV = "2.1.1"
 val catsEffectV = "2.1.1"
 val disciplineSpecs2V = "1.0.0"
 
