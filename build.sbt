@@ -24,7 +24,7 @@ lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
 val catsV = "2.1.1"
-val catsEffectV = "2.1.1"
+val catsEffectV = "2.1.2"
 val disciplineSpecs2V = "1.0.0"
 
 val kindProjectorV = "0.10.3"
