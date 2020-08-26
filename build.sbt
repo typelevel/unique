@@ -23,11 +23,11 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.1.1"
-val catsEffectV = "2.1.4"
-val disciplineSpecs2V = "1.0.0"
+val catsV = "2.2.0-RC2"
+val catsEffectV = "3.0-f5eba3c"
+val disciplineSpecs2V = "1.1.0"
 
-val kindProjectorV = "0.10.3"
+val kindProjectorV = "0.11.0"
 val betterMonadicForV = "0.3.1"
 
 
@@ -39,9 +39,8 @@ lazy val contributors = Seq(
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
-  scalaVersion := "2.13.0",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.9"),
-  scalacOptions += "-Yrangepos",
+  scalaVersion := "2.13.2",
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.12"),
   scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
       "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
@@ -50,7 +49,7 @@ lazy val commonSettings = Seq(
   scalacOptions in (Compile, doc) -= "-Xfatal-warnings",
 
 
-  addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
+  addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
@@ -116,7 +115,6 @@ lazy val micrositeSettings = {
       "-Ywarn-unused:imports",
       "-Xlint:-missing-interpolator,_"
     ),
-    libraryDependencies += "com.47deg" %% "github4s" % "0.20.0",
     micrositePushSiteWith := GitHub4s,
     micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
     micrositeExtraMdFiles := Map(
