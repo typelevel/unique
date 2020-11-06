@@ -2,87 +2,60 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 lazy val unique = project.in(file("."))
   .disablePlugins(MimaPlugin)
-  .settings(commonSettings, releaseSettings, publish / skip := true)
-  .aggregate(coreJVM, coreJS)
+  .settings(publish / skip := true)
+  .aggregate(core.jvm)
 
-lazy val core = crossProject(JSPlatform, JVMPlatform)
+lazy val core = crossProject(JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("core"))
-  .settings(commonSettings, releaseSettings)
+  .settings(commonSettings)
   .settings(
     name := "unique"
   )
 
-lazy val docs = project.in(file("docs"))
+lazy val docs = project.in(file("site"))
   .disablePlugins(MimaPlugin)
   .enablePlugins(MicrositesPlugin)
-  .enablePlugins(TutPlugin)
-  .settings(commonSettings, releaseSettings, micrositeSettings, publish / skip := true)
-  .dependsOn(coreJVM)
+  .enablePlugins(MdocPlugin)
+  .settings(commonSettings)
+  .settings(skip in publish := true)
+  .dependsOn(core.jvm)
   
-lazy val coreJVM = core.jvm
-lazy val coreJS = core.js
 
-val catsV = "2.2.0-RC2"
-val catsEffectV = "3.0-f5eba3c"
-val disciplineSpecs2V = "1.1.0"
-
-val kindProjectorV = "0.11.0"
-val betterMonadicForV = "0.3.1"
 
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
 )
 
+val dottyV = "0.27.0-RC1"
+// val catsV = "2.3.0-M1"
+val catsEffectV = "3.0.0-M2"
+val disciplineMunitVersion = "1.0.1"
+
 // General Settings
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
-  scalaVersion := "2.13.2",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.12"),
-  scalacOptions in (Compile, doc) ++= Seq(
-      "-groups",
-      "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
-      "-doc-source-url", "https://github.com/christopherdavenport/unique/blob/v" + version.value + "€{FILE_PATH}.scala"
+  scalaVersion := dottyV,
+  // crossScalaVersions := Seq(scalaVersion.value, "2.13.3", "2.12.12"),
+  scalacOptions ++= Seq(
+    "-language:implicitConversions"
   ),
-  scalacOptions in (Compile, doc) -= "-Xfatal-warnings",
 
-
-  addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full),
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
   libraryDependencies ++= Seq(
-    "org.typelevel"               %%% "cats-core"                  % catsV,
-    "org.typelevel"               %%% "cats-effect"                % catsEffectV,
-    "org.typelevel"               %%% "discipline-specs2"          % disciplineSpecs2V        % Test,
-    "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
-  )
+    "org.typelevel"               %% "cats-effect"                % catsEffectV,
+    // "org.typelevel"               %%% "discipline-specs2"          % disciplineSpecs2V        % Test,
+    // "org.typelevel"               %% "cats-laws"                  % catsV                    % Test,
+    "org.typelevel" %% "discipline-munit" % disciplineMunitVersion % Test
+  ),
+  Compile / unmanagedSourceDirectories ++= {
+  val major = if (isDotty.value) "-3" else "-2"
+    List(CrossType.Pure, CrossType.Full).flatMap(
+      _.sharedSrcDir(baseDirectory.value, "main").toList.map(f => file(f.getPath + major))
+    )
+  }
 )
-
-lazy val releaseSettings = {
-  Seq(
-    scmInfo := Some(
-      ScmInfo(
-        url("https://github.com/ChristopherDavenport/unique"),
-        "git@github.com:ChristopherDavenport/unique.git"
-      )
-    ),
-    homepage := Some(url("https://github.com/ChristopherDavenport/unique")),
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-    pomIncludeRepository := { _ => false },
-    pomExtra := {
-      <developers>
-        {for ((username, name) <- contributors) yield
-        <developer>
-          <id>{username}</id>
-          <name>{name}</name>
-          <url>http://github.com/{username}</url>
-        </developer>
-        }
-      </developers>
-    }
-  )
-}
 
 lazy val micrositeSettings = {
   import microsites._
@@ -106,7 +79,6 @@ lazy val micrositeSettings = {
       "gray-lighter" -> "#F4F3F4",
       "white-color" -> "#FFFFFF"
     ),
-    fork in tut := true,
     scalacOptions in Tut --= Seq(
       "-Xfatal-warnings",
       "-Ywarn-unused-import",
@@ -124,3 +96,21 @@ lazy val micrositeSettings = {
     )
   )
 }
+
+inThisBuild(List(
+  organization := "io.chrisdavenport",
+  developers := List(
+    Developer("ChristopherDavenport", "Christopher Davenport", "chris@christopherdavenport.tech", url("https://github.com/ChristopherDavenport"))
+  ),
+
+  homepage := Some(url("https://github.com/ChristopherDavenport/unique")),
+  licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+
+  pomIncludeRepository := { _ => false},
+  scalacOptions in (Compile, doc) ++= Seq(
+      "-groups",
+      "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
+      "-doc-source-url", "https://github.com/christopherdavenport/unique/blob/v" + version.value + "€{FILE_PATH}.scala"
+  ),
+  scalacOptions in (Compile, doc) -= "-Xfatal-warnings",
+))
