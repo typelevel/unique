@@ -1,25 +1,21 @@
 package io.chrisdavenport.unique
 
 import cats._
-import org.specs2.mutable.Specification
-// import cats.implicits._
 import cats.effect._
+import munit.CatsEffectSuite
 
-class UniqueSuite extends Specification {
+class UniqueSuite extends CatsEffectSuite {
 
-  "Equality - be equal when comparing the same value" should {
-    val test = for {
+  test("Equality - be equal when comparing the same value"){
+    for {
       unique <- Unique.newUnique[IO]
-    } yield Eq[Unique].eqv(unique, unique)
-    test.unsafeRunSync should_=== (true)
+    } yield assert(Eq[Unique].eqv(unique, unique))
   }
 
-  "Non-Equality - Not be equal when comparing different values" should {
-    val test = for {
+  test("Non-Equality - Not be equal when comparing different values"){
+    for {
       unique1 <- Unique.newUnique[IO]
       unique2 <- Unique.newUnique[IO]
-    } yield Eq[Unique].eqv(unique1,unique2)
-
-    test.unsafeRunSync should_=== (false)
+    } yield assert(Eq[Unique].neqv(unique1,unique2))
   }
 }
