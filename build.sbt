@@ -12,6 +12,8 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .settings(
     name := "unique"
   )
+  .jsSettings(scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)))
+  .jsSettings(crossScalaVersions := crossScalaVersions.value.filter(_.startsWith("2.")))
 
 lazy val docs = project.in(file("docs"))
   .disablePlugins(MimaPlugin)
@@ -23,11 +25,12 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.1.1"
-val catsEffectV = "2.1.4"
-val disciplineSpecs2V = "1.0.0"
+val catsV = "2.3.0-M2"
+val catsEffectV = "2.3.0-M1"
+val disciplineMunitV = "1.0.2"
+val munitCatsEffectV = "0.9.0"
 
-val kindProjectorV = "0.10.3"
+val kindProjectorV = "0.11.0"
 val betterMonadicForV = "0.3.1"
 
 
@@ -39,9 +42,12 @@ lazy val contributors = Seq(
 lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
-  scalaVersion := "2.13.0",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.9"),
-  scalacOptions += "-Yrangepos",
+  scalaVersion := "2.13.3",
+  crossScalaVersions := Seq("3.0.0-M1", scalaVersion.value, "2.12.12"),
+  scalacOptions ++= {
+    if (isDotty.value) Seq.empty
+    else Seq("-Yrangepos")
+  },
   scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
       "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
@@ -49,15 +55,27 @@ lazy val commonSettings = Seq(
   ),
   scalacOptions in (Compile, doc) -= "-Xfatal-warnings",
 
-
-  addCompilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.binary),
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
+  libraryDependencies ++= {
+    if (isDotty.value) Seq.empty
+    else Seq(
+      compilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full),
+      compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
+    )
+  },
   libraryDependencies ++= Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
     "org.typelevel"               %%% "cats-effect"                % catsEffectV,
-    "org.typelevel"               %%% "discipline-specs2"          % disciplineSpecs2V        % Test,
+    "org.typelevel"               %%% "discipline-munit"           % disciplineMunitV         % Test,
+    "org.typelevel"               %%% "munit-cats-effect-2"        % munitCatsEffectV         % Test,
     "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
-  )
+  ),
+  Compile / doc / sources := {
+    val old = (Compile / doc / sources).value
+    if (isDotty.value)
+      Seq()
+    else
+      old
+  }
 )
 
 lazy val releaseSettings = {
