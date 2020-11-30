@@ -30,7 +30,7 @@ val catsEffectV = "2.3.0-M1"
 val disciplineMunitV = "1.0.3"
 val munitCatsEffectV = "0.9.0"
 
-val kindProjectorV = "0.11.1"
+val kindProjectorV = "0.11.2"
 val betterMonadicForV = "0.3.1"
 
 
