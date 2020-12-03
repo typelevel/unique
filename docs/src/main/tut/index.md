@@ -19,6 +19,8 @@ import cats.effect._
 Then we can display that only values created by the same effect are equal.
 
 ```tut:book
+import cats.effect.unsafe.implicits.global
+
 val equal = for {
   unique <- Unique.newUnique[IO]
 } yield unique === unique
