@@ -13,7 +13,7 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
     name := "unique"
   )
   .jsSettings(scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)))
-  .jsSettings(crossScalaVersions := crossScalaVersions.value.filter(_.startsWith("2.")))
+  .jsSettings(crossScalaVersions := crossScalaVersions.value.filterNot(_.startsWith("3.0.0-M1")))
 
 lazy val docs = project.in(file("docs"))
   .disablePlugins(MimaPlugin)
@@ -25,10 +25,11 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.3.0-M2"
+
+val catsV = "2.3.0"
 val catsEffectV = "3.0.0-M3"
 val disciplineMunitV = "1.0.3"
-val munitCatsEffectV = "0.9.0"
+val munitCatsEffectV = "0.11.0"
 
 val kindProjectorV = "0.11.2"
 val betterMonadicForV = "0.3.1"
@@ -43,7 +44,7 @@ lazy val commonSettings = Seq(
   organization := "io.chrisdavenport",
 
   scalaVersion := "2.13.3",
-  crossScalaVersions := Seq("3.0.0-M1", scalaVersion.value, "2.12.12"),
+  crossScalaVersions := Seq("3.0.0-M2", "3.0.0-M1", scalaVersion.value, "2.12.12"),
   scalacOptions ++= {
     if (isDotty.value) Seq.empty
     else Seq("-Yrangepos")
