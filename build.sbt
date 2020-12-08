@@ -27,7 +27,7 @@ lazy val coreJS = core.js
 
 
 val catsV = "2.3.0"
-val catsEffectV = "3.0.0-M3"
+val catsEffectV = "3.0.0-M4"
 val disciplineMunitV = "1.0.3"
 val munitCatsEffectV = "0.11.0"
 
