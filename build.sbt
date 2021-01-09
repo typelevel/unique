@@ -2,24 +2,25 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
+ThisBuild / crossScalaVersions := Seq("3.0.0-M3", "3.0.0-M2", "2.13.3", "2.12.12")
+ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.filter(_.startsWith("2.")).head
 
 ThisBuild / publishGithubUser := "christopherdavenport"
 ThisBuild / publishFullName := "Christopher Davenport"
 
 lazy val unique = project.in(file("."))
-  .disablePlugins(MimaPlugin)
-  .settings(commonSettings, releaseSettings, publish / skip := true)
+  .enablePlugins(NoPublishPlugin)
   .aggregate(coreJVM, coreJS)
+  .settings(commonSettings, releaseSettings, publish / skip := true)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
-  .crossType(CrossType.Pure)
+  .crossType(CrossType.Full)
   .in(file("core"))
   .settings(commonSettings, releaseSettings)
   .settings(
     name := "unique"
   )
   .jsSettings(scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)))
-  .jsSettings(crossScalaVersions := crossScalaVersions.value.filterNot(_.startsWith("3.0.0-M1")))
 
 lazy val docs = project.in(file("docs"))
   .disablePlugins(MimaPlugin)
@@ -41,8 +42,6 @@ lazy val contributors = Seq(
 
 // General Settings
 lazy val commonSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-M3", "3.0.0-M2", "2.13.3", "2.12.12"),
-  scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).head,
   libraryDependencies ++= Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
     "org.typelevel"               %%% "cats-effect"                % catsEffectV,
