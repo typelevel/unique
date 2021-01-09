@@ -108,3 +108,10 @@ lazy val micrositeSettings = {
     )
   )
 }
+
+ThisBuild / versionIntroduced := Map(
+  "2.12" -> "2.1.0",
+  "2.13" -> "2.1.0",
+  "3.0.0-M2" -> "2.1.0",
+  "3.0.0-M3" -> "2.1.0",
+)
