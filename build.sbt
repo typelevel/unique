@@ -24,13 +24,11 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
 lazy val docs = project.in(file("docs"))
   .disablePlugins(MimaPlugin)
   .enablePlugins(MicrositesPlugin)
-  .enablePlugins(TutPlugin)
   .settings(commonSettings, releaseSettings, micrositeSettings, publish / skip := true)
   .dependsOn(coreJVM)
   
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
-
 
 val catsV = "2.3.0"
 val catsEffectV = "3.0.0-M4"
@@ -53,7 +51,6 @@ lazy val commonSettings = Seq(
     "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
   ),
   testFrameworks += new TestFramework("munit.Framework"),
-  githubWorkflowTargetBranches := List("*", "series/*"),
 )
 
 lazy val releaseSettings = {
@@ -75,8 +72,8 @@ lazy val micrositeSettings = {
   Seq(
     micrositeName := "unique",
     micrositeDescription := "Functional Unique Values for Scala",
-    micrositeAuthor := "Christopher Davenport",
-    micrositeGithubOwner := "ChristopherDavenport",
+    micrositeAuthor := "Typelevel",
+    micrositeGithubOwner := "typelevel",
     micrositeGithubRepo := "unique",
     micrositeBaseUrl := "/unique",
     micrositeDocumentationUrl := "https://www.javadoc.io/doc/org.typelevel/unique_2.13",
@@ -92,14 +89,6 @@ lazy val micrositeSettings = {
       "gray-lighter" -> "#F4F3F4",
       "white-color" -> "#FFFFFF"
     ),
-    scalacOptions in Tut --= Seq(
-      "-Xfatal-warnings",
-      "-Ywarn-unused-import",
-      "-Ywarn-numeric-widen",
-      "-Ywarn-dead-code",
-      "-Ywarn-unused:imports",
-      "-Xlint:-missing-interpolator,_"
-    ),
     libraryDependencies += "com.47deg" %% "github4s" % "0.27.1",
     micrositePushSiteWith := GitHub4s,
     micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
@@ -107,9 +96,35 @@ lazy val micrositeSettings = {
         file("CHANGELOG.md")        -> ExtraMdFileConfig("changelog.md", "page", Map("title" -> "changelog", "section" -> "changelog", "position" -> "100")),
         file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "101")),
         file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "102"))
-    )
-  )
+    ),
+    mdocIn := (sourceDirectory in Compile).value / "mdoc",
+  ),
 }
+
+
+ThisBuild / githubWorkflowBuildPreamble ++= Seq(
+  WorkflowStep.Use("ruby", "setup-ruby", "v1", params = Map("ruby-version" -> "2.7")),
+  WorkflowStep.Run(List("gem install bundler")),
+  WorkflowStep.Run(List("bundle install --gemfile=site/Gemfile"))
+)
+
+ThisBuild / githubWorkflowTargetBranches := List("*", "series/*")
+
+ThisBuild / githubWorkflowBuild +=
+  WorkflowStep.Sbt(List("docs/makeMicrosite"), cond = Some(s"matrix.scala == '${scalaVersion.value}'"))
+
+ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Sbt(List("ci-release")),
+  WorkflowStep.Run(List(
+    """eval "$$(ssh-agent -s)"""",
+    """echo "$$SSH_PRIVATE_KEY" | ssh-add -""",
+    """git config --global user.name "GitHub Actions CI"""",
+    """git config --global user.email "ghactions@invalid""""
+  )),
+  WorkflowStep.Sbt(List("docs/publishMicrosite"),
+    name = Some(s"Publish microsite"),
+    env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
+)
 
 ThisBuild / versionIntroduced := Map(
   "2.12" -> "2.1.0",
@@ -117,3 +132,4 @@ ThisBuild / versionIntroduced := Map(
   "3.0.0-M2" -> "2.1.0",
   "3.0.0-M3" -> "2.1.0",
 )
+
