@@ -30,10 +30,10 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.3.0"
-val catsEffectV = "3.0.0-M4"
-val disciplineMunitV = "1.0.3"
-val munitCatsEffectV = "0.11.0"
+val catsV = "2.3.1"
+val catsEffectV = "2.3.1"
+val disciplineMunitV = "1.0.4"
+val munitCatsEffectV = "0.12.0"
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
@@ -47,7 +47,7 @@ lazy val commonSettings = Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
     "org.typelevel"               %%% "cats-effect"                % catsEffectV,
     "org.typelevel"               %%% "discipline-munit"           % disciplineMunitV         % Test,
-    "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
+    "org.typelevel"               %%% "munit-cats-effect-2"        % munitCatsEffectV         % Test,
     "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
   ),
   testFrameworks += new TestFramework("munit.Framework"),
