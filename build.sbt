@@ -53,6 +53,7 @@ lazy val commonSettings = Seq(
     "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
   ),
   testFrameworks += new TestFramework("munit.Framework"),
+  githubWorkflowTargetBranches := List("*", "series/*"),
 )
 
 lazy val releaseSettings = {
