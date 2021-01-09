@@ -2,8 +2,8 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
-ThisBuild / crossScalaVersions := Seq("3.0.0-M3", "3.0.0-M2", "2.13.3", "2.12.12")
-ThisBuild / scalaVersion := (ThisBuild / crossScalaVersions).value.filter(_.startsWith("2.")).head
+ThisBuild / crossScalaVersions := Seq("2.13.3", "2.12.12", "3.0.0-M3", "3.0.0-M2")
+ThisBuild / scalaVersion := crossScalaVersions.value.head
 
 ThisBuild / publishGithubUser := "christopherdavenport"
 ThisBuild / publishFullName := "Christopher Davenport"
