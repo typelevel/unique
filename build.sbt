@@ -41,7 +41,7 @@ lazy val contributors = Seq(
 
 // General Settings
 lazy val commonSettings = Seq(
-  crossScalaVersions := Seq("3.0.0-M2", "3.0.0-M1", "2.13.3", "2.12.12"),
+  crossScalaVersions := Seq("3.0.0-M3", "3.0.0-M2", "2.13.3", "2.12.12"),
   scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).head,
   libraryDependencies ++= Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
