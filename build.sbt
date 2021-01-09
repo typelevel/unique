@@ -52,6 +52,7 @@ lazy val commonSettings = Seq(
     "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
     "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
   ),
+  testFrameworks += new TestFramework("munit.Framework"),
 )
 
 lazy val releaseSettings = {
