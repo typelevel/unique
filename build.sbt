@@ -1,5 +1,7 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
+val Scala213 = "2.13.3"
+
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
 ThisBuild / crossScalaVersions := Seq("2.13.3", "2.12.12", "3.0.0-M3", "3.0.0-M2")
@@ -27,7 +29,7 @@ lazy val docs = project.in(file("docs"))
   .enablePlugins(MicrositesPlugin)
   .settings(commonSettings, releaseSettings, micrositeSettings, publish / skip := true)
   .dependsOn(coreJVM)
-  
+
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
@@ -110,7 +112,7 @@ ThisBuild / githubWorkflowBuildPreamble ++= Seq(
 ThisBuild / githubWorkflowTargetBranches := List("*", "series/*")
 
 ThisBuild / githubWorkflowBuild +=
-  WorkflowStep.Sbt(List("docs/makeMicrosite"), cond = Some(s"matrix.scala == '${scalaVersion.value}'"))
+  WorkflowStep.Sbt(List("docs/makeMicrosite"), cond = Some(s"matrix.scala == '$Scala213'"))
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(List("ci-release")),
