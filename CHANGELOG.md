@@ -4,7 +4,18 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ----
 
-## <a name="Unreleased"></a>Unreleased Changes
+## <a name="2.1.0"></a>New and Noteworthy for Version 2.1.0
+
+- Published under `org.typelevel`
+- Base package moved to `org.typelevel.unique`
+- cats-2.3.1
+- cats-effect-2.3.1
+- Cross-built for Scala 3.0.0-M3, 3.0.0-M2, 2.13, and 2.12
+
+## <a name="2.0.0"></a>New and Noteworthy for Version 2.0.0
+
+- cats 2.0.0
+- cats-effect 2.0.0
 
 ## <a name="2.0.0-RC1"></a>New and Noteworthy for Version 2.0.0-RC1
 
