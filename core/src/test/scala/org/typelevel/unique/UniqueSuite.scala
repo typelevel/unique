@@ -1,4 +1,4 @@
-package io.chrisdavenport.unique
+package org.typelevel.unique
 
 import cats._
 import cats.effect._

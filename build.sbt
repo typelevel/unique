@@ -41,7 +41,7 @@ lazy val contributors = Seq(
 
 // General Settings
 lazy val commonSettings = Seq(
-  organization := "io.chrisdavenport",
+  organization := "org.typelevel",
 
   scalaVersion := "2.13.3",
   crossScalaVersions := Seq("3.0.0-M2", "3.0.0-M1", scalaVersion.value, "2.12.12"),
@@ -52,7 +52,7 @@ lazy val commonSettings = Seq(
   scalacOptions in (Compile, doc) ++= Seq(
       "-groups",
       "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
-      "-doc-source-url", "https://github.com/christopherdavenport/unique/blob/v" + version.value + "€{FILE_PATH}.scala"
+      "-doc-source-url", "https://github.com/typelevel/unique/blob/v" + version.value + "€{FILE_PATH}.scala"
   ),
   scalacOptions in (Compile, doc) -= "-Xfatal-warnings",
 
@@ -83,11 +83,11 @@ lazy val releaseSettings = {
   Seq(
     scmInfo := Some(
       ScmInfo(
-        url("https://github.com/ChristopherDavenport/unique"),
-        "git@github.com:ChristopherDavenport/unique.git"
+        url("https://github.com/typelevel/unique"),
+        "git@github.com:typelevel/unique.git"
       )
     ),
-    homepage := Some(url("https://github.com/ChristopherDavenport/unique")),
+    homepage := Some(url("https://github.com/typelevel/unique")),
     licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
     pomIncludeRepository := { _ => false },
     pomExtra := {
@@ -113,7 +113,7 @@ lazy val micrositeSettings = {
     micrositeGithubOwner := "ChristopherDavenport",
     micrositeGithubRepo := "unique",
     micrositeBaseUrl := "/unique",
-    micrositeDocumentationUrl := "https://www.javadoc.io/doc/io.chrisdavenport/unique_2.12",
+    micrositeDocumentationUrl := "https://www.javadoc.io/doc/org.typelevel/unique_2.13",
     micrositeFooterText := None,
     micrositeHighlightTheme := "atom-one-light",
     micrositePalette := Map(
