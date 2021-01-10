@@ -1,9 +1,19 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
+val Scala213 = "2.13.4"
+
+ThisBuild / organization := "org.typelevel"
+ThisBuild / baseVersion := "2.1"
+ThisBuild / crossScalaVersions := Seq("2.12.12", Scala213, "3.0.0-M2", "3.0.0-M3")
+ThisBuild / scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last
+
+ThisBuild / publishGithubUser := "christopherdavenport"
+ThisBuild / publishFullName := "Christopher Davenport"
+
 lazy val unique = project.in(file("."))
-  .disablePlugins(MimaPlugin)
-  .settings(commonSettings, releaseSettings, publish / skip := true)
+  .enablePlugins(NoPublishPlugin)
   .aggregate(coreJVM, coreJS)
+  .settings(commonSettings, releaseSettings, publish / skip := true)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
@@ -13,27 +23,20 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
     name := "unique"
   )
   .jsSettings(scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)))
-  .jsSettings(crossScalaVersions := crossScalaVersions.value.filterNot(_.startsWith("3.0.0-M1")))
 
 lazy val docs = project.in(file("docs"))
   .disablePlugins(MimaPlugin)
   .enablePlugins(MicrositesPlugin)
-  .enablePlugins(TutPlugin)
   .settings(commonSettings, releaseSettings, micrositeSettings, publish / skip := true)
   .dependsOn(coreJVM)
-  
+
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-
-val catsV = "2.3.0"
-val catsEffectV = "3.0.0-M4"
-val disciplineMunitV = "1.0.3"
-val munitCatsEffectV = "0.11.0"
-
-val kindProjectorV = "0.11.2"
-val betterMonadicForV = "0.3.1"
-
+val catsV = "2.3.1"
+val catsEffectV = "2.3.1"
+val disciplineMunitV = "1.0.4"
+val munitCatsEffectV = "0.12.0"
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
@@ -41,66 +44,27 @@ lazy val contributors = Seq(
 
 // General Settings
 lazy val commonSettings = Seq(
-  organization := "io.chrisdavenport",
-
-  scalaVersion := "2.13.3",
-  crossScalaVersions := Seq("3.0.0-M2", "3.0.0-M1", scalaVersion.value, "2.12.12"),
-  scalacOptions ++= {
-    if (isDotty.value) Seq.empty
-    else Seq("-Yrangepos")
-  },
-  scalacOptions in (Compile, doc) ++= Seq(
-      "-groups",
-      "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
-      "-doc-source-url", "https://github.com/christopherdavenport/unique/blob/v" + version.value + "€{FILE_PATH}.scala"
-  ),
-  scalacOptions in (Compile, doc) -= "-Xfatal-warnings",
-
-  libraryDependencies ++= {
-    if (isDotty.value) Seq.empty
-    else Seq(
-      compilerPlugin("org.typelevel" % "kind-projector" % kindProjectorV cross CrossVersion.full),
-      compilerPlugin("com.olegpy" %% "better-monadic-for" % betterMonadicForV),
-    )
-  },
   libraryDependencies ++= Seq(
     "org.typelevel"               %%% "cats-core"                  % catsV,
     "org.typelevel"               %%% "cats-effect"                % catsEffectV,
     "org.typelevel"               %%% "discipline-munit"           % disciplineMunitV         % Test,
-    "org.typelevel"               %%% "munit-cats-effect-3"        % munitCatsEffectV         % Test,
+    "org.typelevel"               %%% "munit-cats-effect-2"        % munitCatsEffectV         % Test,
     "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
   ),
-  Compile / doc / sources := {
-    val old = (Compile / doc / sources).value
-    if (isDotty.value)
-      Seq()
-    else
-      old
-  }
+  testFrameworks += new TestFramework("munit.Framework"),
 )
 
 lazy val releaseSettings = {
   Seq(
     scmInfo := Some(
       ScmInfo(
-        url("https://github.com/ChristopherDavenport/unique"),
-        "git@github.com:ChristopherDavenport/unique.git"
+        url("https://github.com/typelevel/unique"),
+        "git@github.com:typelevel/unique.git"
       )
     ),
-    homepage := Some(url("https://github.com/ChristopherDavenport/unique")),
-    licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
+    homepage := Some(url("https://github.com/typelevel/unique")),
+    licenses := List("MIT" -> url("http://opensource.org/licenses/MIT")),
     pomIncludeRepository := { _ => false },
-    pomExtra := {
-      <developers>
-        {for ((username, name) <- contributors) yield
-        <developer>
-          <id>{username}</id>
-          <name>{name}</name>
-          <url>http://github.com/{username}</url>
-        </developer>
-        }
-      </developers>
-    }
   )
 }
 
@@ -109,11 +73,11 @@ lazy val micrositeSettings = {
   Seq(
     micrositeName := "unique",
     micrositeDescription := "Functional Unique Values for Scala",
-    micrositeAuthor := "Christopher Davenport",
-    micrositeGithubOwner := "ChristopherDavenport",
+    micrositeAuthor := "Typelevel",
+    micrositeGithubOwner := "typelevel",
     micrositeGithubRepo := "unique",
     micrositeBaseUrl := "/unique",
-    micrositeDocumentationUrl := "https://www.javadoc.io/doc/io.chrisdavenport/unique_2.12",
+    micrositeDocumentationUrl := "https://www.javadoc.io/doc/org.typelevel/unique_2.13",
     micrositeFooterText := None,
     micrositeHighlightTheme := "atom-one-light",
     micrositePalette := Map(
@@ -126,15 +90,6 @@ lazy val micrositeSettings = {
       "gray-lighter" -> "#F4F3F4",
       "white-color" -> "#FFFFFF"
     ),
-    fork in tut := true,
-    scalacOptions in Tut --= Seq(
-      "-Xfatal-warnings",
-      "-Ywarn-unused-import",
-      "-Ywarn-numeric-widen",
-      "-Ywarn-dead-code",
-      "-Ywarn-unused:imports",
-      "-Xlint:-missing-interpolator,_"
-    ),
     libraryDependencies += "com.47deg" %% "github4s" % "0.27.1",
     micrositePushSiteWith := GitHub4s,
     micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
@@ -142,6 +97,40 @@ lazy val micrositeSettings = {
         file("CHANGELOG.md")        -> ExtraMdFileConfig("changelog.md", "page", Map("title" -> "changelog", "section" -> "changelog", "position" -> "100")),
         file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "101")),
         file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "102"))
-    )
-  )
+    ),
+    mdocIn := (sourceDirectory in Compile).value / "mdoc",
+  ),
 }
+
+
+ThisBuild / githubWorkflowBuildPreamble ++= Seq(
+  WorkflowStep.Use("ruby", "setup-ruby", "v1", params = Map("ruby-version" -> "2.7")),
+  WorkflowStep.Run(List("gem install bundler")),
+  WorkflowStep.Run(List("bundle install --gemfile=docs/Gemfile"))
+)
+
+ThisBuild / githubWorkflowTargetBranches := List("*", "series/*")
+
+ThisBuild / githubWorkflowBuild +=
+  WorkflowStep.Sbt(List("docs/makeMicrosite"), cond = Some(s"matrix.scala == '$Scala213'"))
+
+ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Sbt(List("ci-release")),
+  WorkflowStep.Run(List(
+    """eval "$$(ssh-agent -s)"""",
+    """echo "$$SSH_PRIVATE_KEY" | ssh-add -""",
+    """git config --global user.name "GitHub Actions CI"""",
+    """git config --global user.email "ghactions@invalid""""
+  )),
+  WorkflowStep.Sbt(List("docs/publishMicrosite"),
+    name = Some(s"Publish microsite"),
+    env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
+)
+
+ThisBuild / versionIntroduced := Map(
+  "2.12" -> "2.1.0",
+  "2.13" -> "2.1.0",
+  "3.0.0-M2" -> "2.1.0",
+  "3.0.0-M3" -> "2.1.0",
+)
+
