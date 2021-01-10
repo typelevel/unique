@@ -10,6 +10,10 @@ ThisBuild / scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).
 ThisBuild / publishGithubUser := "christopherdavenport"
 ThisBuild / publishFullName := "Christopher Davenport"
 
+ThisBuild / spiewakMainBranches := Seq("main", "series/2.x")
+
+enablePlugins(SonatypeCiReleasePlugin)
+
 lazy val unique = project.in(file("."))
   .enablePlugins(NoPublishPlugin)
   .aggregate(coreJVM, coreJS)

@@ -4,7 +4,7 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ----
 
-## <a name="2.1.0-M6"></a>New and Noteworthy for Version 2.1.0-M6
+## <a name="2.1.0-M7"></a>New and Noteworthy for Version 2.1.0-M7
 
 - Published under `org.typelevel`
 - Base package moved to `org.typelevel.unique`
