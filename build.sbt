@@ -29,9 +29,15 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   .jsSettings(scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)))
 
 lazy val docs = project.in(file("docs"))
-  .disablePlugins(MimaPlugin)
+  .disablePlugins(MimaPlugin, NoPublishPlugin)
   .enablePlugins(MicrositesPlugin)
-  .settings(commonSettings, releaseSettings, micrositeSettings, publish / skip := true)
+  .settings(
+    commonSettings,
+    releaseSettings,
+    micrositeSettings,
+    publish / skip := true,
+    githubWorkflowArtifactUpload := false
+  )
   .dependsOn(coreJVM)
 
 lazy val coreJVM = core.jvm
