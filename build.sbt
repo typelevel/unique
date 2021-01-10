@@ -16,7 +16,7 @@ lazy val unique = project.in(file("."))
   .settings(commonSettings, releaseSettings, publish / skip := true)
 
 lazy val core = crossProject(JSPlatform, JVMPlatform)
-  .crossType(CrossType.Full)
+  .crossType(CrossType.Pure)
   .in(file("core"))
   .settings(commonSettings, releaseSettings)
   .settings(
