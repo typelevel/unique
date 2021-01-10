@@ -1,11 +1,11 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-val Scala213 = "2.13.3"
+val Scala213 = "2.13.4"
 
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
-ThisBuild / crossScalaVersions := Seq("2.13.3", "2.12.12", "3.0.0-M3", "3.0.0-M2")
-ThisBuild / scalaVersion := crossScalaVersions.value.head
+ThisBuild / crossScalaVersions := Seq("2.12.12", Scala213, "3.0.0-M2", "3.0.0-M3")
+ThisBuild / scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last
 
 ThisBuild / publishGithubUser := "christopherdavenport"
 ThisBuild / publishFullName := "Christopher Davenport"
