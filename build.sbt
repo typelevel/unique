@@ -125,7 +125,7 @@ ThisBuild / githubWorkflowBuild +=
   WorkflowStep.Sbt(List("docs/makeMicrosite"), cond = Some(s"matrix.scala == '$Scala213'"))
 
 ThisBuild / githubWorkflowPublish := Seq(
-  WorkflowStep.Sbt(List("ci-release")),
+  WorkflowStep.Sbt(List("release")),
   WorkflowStep.Run(List(
     """eval "$$(ssh-agent -s)"""",
     """echo "$$SSH_PRIVATE_KEY" | ssh-add -""",
