@@ -153,7 +153,7 @@ jobs:
       - name: Import signing key
         run: echo $PGP_SECRET | base64 -d | gpg --import
 
-      - run: sbt ++${{ matrix.scala }} ci-release
+      - run: sbt ++${{ matrix.scala }} release
 
       - run: |
           eval "$$(ssh-agent -s)"
