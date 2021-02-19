@@ -4,7 +4,7 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ----
 
-## <a name="2.1.0"></a>New and Noteworthy for Version 2.1.0
+## <a name="2.1.1"></a>New and Noteworthy for Version 2.1.1
 
 - cats-2.4.2
 - cats-effect-2.3.3
