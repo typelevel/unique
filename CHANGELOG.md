@@ -4,6 +4,13 @@ This file summarizes **notable** changes for each release, but does not describe
 
 ----
 
+## <a name="2.1.0"></a>New and Noteworthy for Version 2.1.0
+
+- cats-2.4.2
+- cats-effect-2.3.3
+- Dropped Scala-3.0.0-M2
+- Added Scala 3.0.0-RC1
+
 ## <a name="2.1.0-M7"></a>New and Noteworthy for Version 2.1.0-M7
 
 - Published under `org.typelevel`

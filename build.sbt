@@ -4,7 +4,7 @@ val Scala213 = "2.13.4"
 
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
-ThisBuild / crossScalaVersions := Seq("2.12.12", Scala213, "3.0.0-M2", "3.0.0-M3")
+ThisBuild / crossScalaVersions := Seq("2.12.12", Scala213, "3.0.0-M3", "3.0.0-RC1")
 ThisBuild / scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last
 
 ThisBuild / publishGithubUser := "christopherdavenport"
@@ -43,10 +43,10 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.3.0"
-val catsEffectV = "2.3.1"
-val disciplineMunitV = "1.0.4"
-val munitCatsEffectV = "0.12.0"
+val catsV = "2.4.2"
+val catsEffectV = "2.3.3"
+val disciplineMunitV = "1.0.6"
+val munitCatsEffectV = "0.13.1"
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
@@ -114,7 +114,7 @@ lazy val micrositeSettings = {
 
 
 ThisBuild / githubWorkflowBuildPreamble ++= Seq(
-  WorkflowStep.Use("ruby", "setup-ruby", "v1", params = Map("ruby-version" -> "2.7")),
+  WorkflowStep.Use(UseRef.Public("ruby", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
   WorkflowStep.Run(List("gem install bundler")),
   WorkflowStep.Run(List("bundle install --gemfile=docs/Gemfile"))
 )
@@ -140,6 +140,6 @@ ThisBuild / githubWorkflowPublish := Seq(
 ThisBuild / versionIntroduced := Map(
   "2.12" -> "2.1.0",
   "2.13" -> "2.1.0",
-  "3.0.0-M2" -> "2.1.0",
-  "3.0.0-M3" -> "2.1.0"
+  "3.0.0-M3" -> "2.1.0",
+  "3.0.0-RC1" -> "2.1.0",
 )
