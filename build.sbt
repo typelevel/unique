@@ -116,7 +116,8 @@ lazy val micrositeSettings = {
 ThisBuild / githubWorkflowBuildPreamble ++= Seq(
   WorkflowStep.Use(UseRef.Public("ruby", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
   WorkflowStep.Run(List("gem install bundler")),
-  WorkflowStep.Run(List("bundle install --gemfile=docs/Gemfile"))
+  WorkflowStep.Run(List("bundle install --gemfile=docs/Gemfile")),
+  WorkflowStep.Run(List("echo git status", "git status"))
 )
 
 ThisBuild / githubWorkflowTargetBranches := List("*", "series/*")

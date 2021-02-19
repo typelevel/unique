@@ -60,6 +60,10 @@ jobs:
 
       - run: bundle install --gemfile=docs/Gemfile
 
+      - run: |
+          echo git status
+          git status
+
       - name: Check that workflows are up to date
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
