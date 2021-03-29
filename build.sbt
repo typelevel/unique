@@ -46,7 +46,7 @@ lazy val coreJS = core.js
 val catsV = "2.4.2"
 val catsEffectV = "2.4.0"
 val disciplineMunitV = "1.0.6"
-val munitCatsEffectV = "0.13.1"
+val munitCatsEffectV = "1.0.0"
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
