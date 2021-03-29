@@ -44,7 +44,7 @@ lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
 val catsV = "2.4.2"
-val catsEffectV = "2.4.0"
+val catsEffectV = "3.0.0"
 val disciplineMunitV = "1.0.6"
 val munitCatsEffectV = "0.13.1"
 
