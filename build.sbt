@@ -126,15 +126,9 @@ ThisBuild / githubWorkflowBuild +=
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(List("release")),
-  WorkflowStep.Run(List(
-    """eval "$$(ssh-agent -s)"""",
-    """echo "$$SSH_PRIVATE_KEY" | ssh-add -""",
-    """git config --global user.name "GitHub Actions CI"""",
-    """git config --global user.email "ghactions@invalid""""
-  )),
   WorkflowStep.Sbt(List("docs/publishMicrosite"),
-    name = Some(s"Publish microsite"),
-    env = Map("SSH_PRIVATE_KEY" -> "${{ secrets.SSH_PRIVATE_KEY }}"))
+    name = Some(s"Publish microsite")
+  )
 )
 
 ThisBuild / versionIntroduced := Map(
