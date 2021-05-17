@@ -4,7 +4,7 @@ val Scala213 = "2.13.5"
 
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
-ThisBuild / crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0-RC2", "3.0.0-RC3")
+ThisBuild / crossScalaVersions := Seq("2.12.13", Scala213, "3.0.0")
 ThisBuild / scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last
 
 ThisBuild / publishGithubUser := "christopherdavenport"
@@ -43,10 +43,10 @@ lazy val docs = project.in(file("docs"))
 lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
-val catsV = "2.6.0"
-val catsEffectV = "2.5.0"
-val disciplineMunitV = "1.0.8"
-val munitCatsEffectV = "1.0.2"
+val catsV = "2.6.1"
+val catsEffectV = "2.5.1"
+val disciplineMunitV = "1.0.9"
+val munitCatsEffectV = "1.0.3"
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
