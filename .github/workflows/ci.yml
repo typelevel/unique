@@ -65,7 +65,7 @@ jobs:
 
       - run: sbt --client '++${{ matrix.scala }}; ci'
 
-      - if: matrix.scala == '2.13.5'
+      - if: matrix.scala == '2.13.6'
         run: sbt --client '++${{ matrix.scala }}; docs/makeMicrosite'
 
       - name: Compress target directories
