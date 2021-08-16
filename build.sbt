@@ -139,3 +139,7 @@ ThisBuild / versionIntroduced := Map(
   "3.0.0-RC2" -> "2.1.3",
   "3.0.0-RC3" -> "2.1.4"
 )
+
+// Scalafmt
+addCommandAlias("fmt", "; Compile / scalafmt; Test / scalafmt; scalafmtSbt")
+addCommandAlias("fmtCheck", "; Compile / scalafmtCheck; Test / scalafmtCheck; scalafmtSbtCheck")
