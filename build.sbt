@@ -14,7 +14,8 @@ ThisBuild / spiewakMainBranches := Seq("main", "series/2.x")
 
 enablePlugins(SonatypeCiReleasePlugin)
 
-lazy val unique = project.in(file("."))
+lazy val unique = project
+  .in(file("."))
   .enablePlugins(NoPublishPlugin)
   .aggregate(coreJVM, coreJS)
   .settings(commonSettings, releaseSettings, publish / skip := true)
@@ -28,7 +29,8 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   )
   .jsSettings(scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.CommonJSModule)))
 
-lazy val docs = project.in(file("docs"))
+lazy val docs = project
+  .in(file("docs"))
   .disablePlugins(MimaPlugin, NoPublishPlugin)
   .enablePlugins(MicrositesPlugin)
   .settings(
@@ -55,13 +57,13 @@ lazy val contributors = Seq(
 // General Settings
 lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
-    "org.typelevel"               %%% "cats-core"                  % catsV,
-    "org.typelevel"               %%% "cats-effect"                % catsEffectV,
-    "org.typelevel"               %%% "discipline-munit"           % disciplineMunitV         % Test,
-    "org.typelevel"               %%% "munit-cats-effect-2"        % munitCatsEffectV         % Test,
-    "org.typelevel"               %%% "cats-laws"                  % catsV                    % Test,
+    "org.typelevel" %%% "cats-core" % catsV,
+    "org.typelevel" %%% "cats-effect" % catsEffectV,
+    "org.typelevel" %%% "discipline-munit" % disciplineMunitV % Test,
+    "org.typelevel" %%% "munit-cats-effect-2" % munitCatsEffectV % Test,
+    "org.typelevel" %%% "cats-laws" % catsV % Test
   ),
-  testFrameworks += new TestFramework("munit.Framework"),
+  testFrameworks += new TestFramework("munit.Framework")
 )
 
 lazy val releaseSettings = {
@@ -74,7 +76,7 @@ lazy val releaseSettings = {
     ),
     homepage := Some(url("https://github.com/typelevel/unique")),
     licenses := List("MIT" -> url("http://opensource.org/licenses/MIT")),
-    pomIncludeRepository := { _ => false },
+    pomIncludeRepository := { _ => false }
   )
 }
 
@@ -104,14 +106,28 @@ lazy val micrositeSettings = {
     micrositePushSiteWith := GitHub4s,
     micrositeGithubToken := sys.env.get("GITHUB_TOKEN"),
     micrositeExtraMdFiles := Map(
-        file("CHANGELOG.md")        -> ExtraMdFileConfig("changelog.md", "page", Map("title" -> "changelog", "section" -> "changelog", "position" -> "100")),
-        file("CODE_OF_CONDUCT.md")  -> ExtraMdFileConfig("code-of-conduct.md",   "page", Map("title" -> "code of conduct",   "section" -> "code of conduct",   "position" -> "101")),
-        file("LICENSE")             -> ExtraMdFileConfig("license.md",   "page", Map("title" -> "license",   "section" -> "license",   "position" -> "102"))
+      file("CHANGELOG.md") -> ExtraMdFileConfig("changelog.md",
+                                                "page",
+                                                Map("title" -> "changelog",
+                                                    "section" -> "changelog",
+                                                    "position" -> "100"
+                                                )
+      ),
+      file("CODE_OF_CONDUCT.md") -> ExtraMdFileConfig("code-of-conduct.md",
+                                                      "page",
+                                                      Map("title" -> "code of conduct",
+                                                          "section" -> "code of conduct",
+                                                          "position" -> "101"
+                                                      )
+      ),
+      file("LICENSE") -> ExtraMdFileConfig("license.md",
+                                           "page",
+                                           Map("title" -> "license", "section" -> "license", "position" -> "102")
+      )
     ),
-    mdocIn := (Compile / sourceDirectory).value / "mdoc",
-  ),
+    mdocIn := (Compile / sourceDirectory).value / "mdoc"
+  )
 }
-
 
 ThisBuild / githubWorkflowBuildPreamble ++= Seq(
   WorkflowStep.Use(UseRef.Public("ruby", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
@@ -126,9 +142,7 @@ ThisBuild / githubWorkflowBuild +=
 
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(List("release")),
-  WorkflowStep.Sbt(List("docs/publishMicrosite"),
-    name = Some(s"Publish microsite")
-  )
+  WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some(s"Publish microsite"))
 )
 
 ThisBuild / versionIntroduced := Map(
@@ -139,3 +153,7 @@ ThisBuild / versionIntroduced := Map(
   "3.0.0-RC2" -> "2.1.3",
   "3.0.0-RC3" -> "2.1.4"
 )
+
+// Scalafmt
+addCommandAlias("fmt", "; Compile / scalafmt; Test / scalafmt; scalafmtSbt")
+addCommandAlias("fmtCheck", "; Compile / scalafmtCheck; Test / scalafmtCheck; scalafmtSbtCheck")
