@@ -4,7 +4,7 @@ val Scala213 = "2.13.6"
 
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
-ThisBuild / crossScalaVersions := Seq("2.12.14", Scala213, "3.0.1")
+ThisBuild / crossScalaVersions := Seq("2.12.14", Scala213, "3.0.2")
 ThisBuild / scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last
 
 ThisBuild / publishGithubUser := "christopherdavenport"
@@ -46,7 +46,7 @@ lazy val coreJVM = core.jvm
 lazy val coreJS = core.js
 
 val catsV = "2.6.1"
-val catsEffectV = "2.5.2"
+val catsEffectV = "2.5.3"
 val disciplineMunitV = "1.0.9"
 val munitCatsEffectV = "1.0.5"
 
