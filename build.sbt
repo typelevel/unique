@@ -149,7 +149,10 @@ ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep.Sbt(List("mimaReportBinaryIssues"), name = Some("Check binary issues")),
   WorkflowStep.Sbt(List("Test/compile"), name = Some("Compile")),
   WorkflowStep.Sbt(List("test"), name = Some("Run tests")),
-  WorkflowStep.Sbt(List("docs/makeMicrosite"), name = Some("Build the microsite"), cond = Some(isScala213Cond)),
+  WorkflowStep.Sbt(List("docs/makeMicrosite"), name = Some("Build the microsite"), cond = Some(isScala213Cond))
+)
+
+ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(List("release"), name = Some("Release")),
   WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some(s"Publish the microsite"))
 )
