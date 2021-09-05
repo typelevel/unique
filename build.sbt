@@ -132,9 +132,12 @@ lazy val micrositeSettings = {
 val isScala213Cond = s"matrix.scala == '$Scala213'"
 
 ThisBuild / githubWorkflowBuildPreamble ++= Seq(
-  WorkflowStep.Use(UseRef.Public("ruby", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
-  WorkflowStep.Run(List("gem install bundler")),
-  WorkflowStep.Run(List("bundle install --gemfile=docs/Gemfile"))
+  WorkflowStep.Use(UseRef.Public("ruby", "setup-ruby", "v1"),
+                   params = Map("ruby-version" -> "2.7"),
+                   cond = Some(isScala213Cond)
+  ),
+  WorkflowStep.Run(List("gem install bundler"), cond = Some(isScala213Cond)),
+  WorkflowStep.Run(List("bundle install --gemfile=docs/Gemfile"), cond = Some(isScala213Cond))
 )
 
 ThisBuild / githubWorkflowTargetBranches := List("*", "series/*")
