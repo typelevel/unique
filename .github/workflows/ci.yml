@@ -67,7 +67,7 @@ jobs:
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 
       - name: Check formatting
-        run: sbt ++${{ matrix.scala }} fmt
+        run: sbt ++${{ matrix.scala }} fmtCheck
 
       - name: Check binary issues
         run: sbt ++${{ matrix.scala }} mimaReportBinaryIssues
