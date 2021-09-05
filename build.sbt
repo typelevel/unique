@@ -146,7 +146,7 @@ ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@
 ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep
     .Sbt(
-      List("fmt"),
+      List("fmtCheck"),
       name = Some("Check formatting")
     ),
   WorkflowStep.Sbt(List("mimaReportBinaryIssues"), name = Some("Check binary issues")),
