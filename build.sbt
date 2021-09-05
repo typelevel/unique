@@ -129,6 +129,8 @@ lazy val micrositeSettings = {
   )
 }
 
+val isScala213Cond = s"matrix.scala == '$Scala213'"
+
 ThisBuild / githubWorkflowBuildPreamble ++= Seq(
   WorkflowStep.Use(UseRef.Public("ruby", "setup-ruby", "v1"), params = Map("ruby-version" -> "2.7")),
   WorkflowStep.Run(List("gem install bundler")),
@@ -137,12 +139,19 @@ ThisBuild / githubWorkflowBuildPreamble ++= Seq(
 
 ThisBuild / githubWorkflowTargetBranches := List("*", "series/*")
 
-ThisBuild / githubWorkflowBuild +=
-  WorkflowStep.Sbt(List("docs/makeMicrosite"), cond = Some(s"matrix.scala == '$Scala213'"))
-
-ThisBuild / githubWorkflowPublish := Seq(
-  WorkflowStep.Sbt(List("release")),
-  WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some(s"Publish microsite"))
+ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.16")
+ThisBuild / githubWorkflowBuild := Seq(
+  WorkflowStep
+    .Sbt(
+      List("fmt"),
+      name = Some("Check formatting")
+    ),
+  WorkflowStep.Sbt(List("mimaReportBinaryIssues"), name = Some("Check binary issues")),
+  WorkflowStep.Sbt(List("Test/compile"), name = Some("Compile")),
+  WorkflowStep.Sbt(List("test"), name = Some("Run tests")),
+  WorkflowStep.Sbt(List("docs/makeMicrosite"), name = Some("Build the microsite"), cond = Some(isScala213Cond)),
+  WorkflowStep.Sbt(List("release"), name = Some("Release")),
+  WorkflowStep.Sbt(List("docs/publishMicrosite"), name = Some(s"Publish the microsite"))
 )
 
 ThisBuild / versionIntroduced := Map(
