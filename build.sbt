@@ -51,6 +51,7 @@ val catsV = "2.6.1"
 val catsEffectV = "2.5.3"
 val disciplineMunitV = "1.0.9"
 val munitCatsEffectV = "1.0.5"
+val kindProjectorV = "0.13.2"
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
@@ -58,6 +59,13 @@ lazy val contributors = Seq(
 
 // General Settings
 lazy val commonSettings = Seq(
+  libraryDependencies ++= (
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
+    else
+      Seq(
+        compilerPlugin(("org.typelevel" % "kind-projector" % kindProjectorV).cross(CrossVersion.full))
+      )
+  ),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core" % catsV,
     "org.typelevel" %%% "cats-effect" % catsEffectV,
