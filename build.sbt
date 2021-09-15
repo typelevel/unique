@@ -1,10 +1,12 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
+val Scala212 = "2.12.15"
 val Scala213 = "2.13.6"
+val Scala3 = "3.0.2"
 
 ThisBuild / organization := "org.typelevel"
 ThisBuild / baseVersion := "2.1"
-ThisBuild / crossScalaVersions := Seq("2.12.14", Scala213, "3.0.2")
+ThisBuild / crossScalaVersions := Seq(Scala212, Scala213, Scala3)
 ThisBuild / scalaVersion := crossScalaVersions.value.filter(_.startsWith("2.")).last
 
 ThisBuild / publishGithubUser := "christopherdavenport"
@@ -49,6 +51,7 @@ val catsV = "2.6.1"
 val catsEffectV = "2.5.3"
 val disciplineMunitV = "1.0.9"
 val munitCatsEffectV = "1.0.5"
+val kindProjectorV = "0.13.2"
 
 lazy val contributors = Seq(
   "ChristopherDavenport" -> "Christopher Davenport"
@@ -56,6 +59,13 @@ lazy val contributors = Seq(
 
 // General Settings
 lazy val commonSettings = Seq(
+  libraryDependencies ++= (
+    if (ScalaArtifacts.isScala3(scalaVersion.value)) Nil
+    else
+      Seq(
+        compilerPlugin(("org.typelevel" % "kind-projector" % kindProjectorV).cross(CrossVersion.full))
+      )
+  ),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core" % catsV,
     "org.typelevel" %%% "cats-effect" % catsEffectV,
