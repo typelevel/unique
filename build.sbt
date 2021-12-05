@@ -50,7 +50,7 @@ lazy val coreJS = core.js
 val catsV = "2.7.0"
 val catsEffectV = "2.5.4"
 val disciplineMunitV = "1.0.9"
-val munitCatsEffectV = "1.0.6"
+val munitCatsEffectV = "1.0.7"
 val kindProjectorV = "0.13.2"
 
 lazy val contributors = Seq(
