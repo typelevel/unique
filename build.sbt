@@ -152,8 +152,11 @@ ThisBuild / githubWorkflowBuildPreamble ++= Seq(
 
 ThisBuild / githubWorkflowTargetBranches := List("*", "series/*")
 
-ThisBuild / githubWorkflowEnv += ("JABBA_INDEX" -> "https://github.com/typelevel/jdk-index/raw/main/index.json")
-ThisBuild / githubWorkflowJavaVersions := Seq("adoptium@8", "adoptium@11", "adoptium@17")
+val JDK8 = JavaSpec.temurin("8")
+val JDK11 = JavaSpec.temurin("11")
+val JDK17 = JavaSpec.temurin("17")
+
+ThisBuild / githubWorkflowJavaVersions := Seq(JDK8, JDK11, JDK17)
 ThisBuild / githubWorkflowBuild := Seq(
   WorkflowStep
     .Sbt(
