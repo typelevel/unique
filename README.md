@@ -2,6 +2,10 @@
 
 This is a shared library for creating and managing unique values in a referentially transparent way.
 
+## End-of-life
+
+This project is now end-of-life.  Its functionality has been [adopted into Cats-Effect 3](https://typelevel.github.io/unique).  We will consider releases for [security](https://github.com/typelevel/unique/security/policy) or other significant tales of woe, but routine maintenance has ceased.
+
 ## [Head on over to the microsite](https://typelevel.github.io/unique)
 
 ## Quick Start

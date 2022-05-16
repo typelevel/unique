@@ -6,6 +6,12 @@ layout: home
 
 This is a shared library for creating and managing unique values in a referentially transparent way.
 
+## Maintenance status
+
+This project is now end-of-life.  Its functionality has been [adopted into Cats-Effect 3](https://typelevel.github.io/unique).  We will consider releases for [security](https://github.com/typelevel/unique/security/policy) or other significant tales of woe, but routine maintenance has ceased.
+
+## Synopsis
+
 Creation of a unique value must always happen within an effect.
 
 Let's start with some imports.
