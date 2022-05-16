@@ -14,6 +14,8 @@ ThisBuild / publishFullName := "Christopher Davenport"
 
 ThisBuild / spiewakMainBranches := Seq("main", "series/2.x")
 
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+
 enablePlugins(SonatypeCiReleasePlugin)
 
 lazy val unique = project
